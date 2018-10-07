@@ -1,0 +1,33 @@
+{
+  "name": "mern-gig-helper",
+  "version": "0.0.2",
+  "description": "A tool to help bands plan their gigs and share them with band members",
+  "main": "App.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "Node",
+    "MongoDB",
+    "React",
+    "Music",
+    "Performance",
+    "Express"
+  ],
+  "author": "Alvin James T. Delos Santos",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "jest": "^23.6.0",
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.3.1",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "validator": "^10.8.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
+}
