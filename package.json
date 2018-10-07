@@ -2,9 +2,11 @@
   "name": "mern-gig-helper",
   "version": "0.0.2",
   "description": "A tool to help bands plan their gigs and share them with band members",
-  "main": "App.js",
+  "main": "app.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "node app.js",
+    "server": "nodemon app.js"
   },
   "keywords": [
     "Node",
