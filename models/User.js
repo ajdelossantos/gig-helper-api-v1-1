@@ -27,13 +27,12 @@ UserSchema.statics.generatePasswordHash = function generatePasswordHash(
 ) {
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(newUser.password, salt, async (err, hash) => {
-      try {
-        newUser.password = hash;
-        const user = await newUser.save();
-        return user;
-      } catch (err) {
+      newUser.password = hash;
+      const user = await newUser.save().catch(err => {
         throw err;
-      }
+      });
+
+      return user;
     });
   });
 };
@@ -42,11 +41,9 @@ UserSchema.statics.comparePasswords = async function comparePassword(
   inputPassword,
   userPassword
 ) {
-  try {
-    return await bcrypt.compare(inputPassword, userPassword);
-  } catch (error) {
-    console.log(error);
-  }
+  return await bcrypt
+    .compare(inputPassword, userPassword)
+    .catch(err => console.log(err));
 };
 
 module.exports = User = mongoose.model('users', UserSchema);

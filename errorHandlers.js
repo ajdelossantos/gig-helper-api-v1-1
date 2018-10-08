@@ -11,3 +11,19 @@ exports.catchErrors = fn => {
     return fn(req, res, next).catch(next);
   };
 };
+
+exports.catchAsyncErrors = fn => {
+  try {
+    return fn();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.throwAsyncErrors = fn => {
+  try {
+    return fn();
+  } catch (err) {
+    throw err;
+  }
+};
