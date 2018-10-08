@@ -6,18 +6,14 @@
   catchErrors(), catch any errors they throw, and pass it along to our express middleware with next()
 */
 
+exports.to = promise => {
+  return promise.then(data => [null, data]).catch(err => [err]);
+};
+
 exports.catchErrors = fn => {
   return function(req, res, next) {
     return fn(req, res, next).catch(next);
   };
-};
-
-exports.catchAsyncErrors = fn => {
-  try {
-    return fn();
-  } catch (err) {
-    console.log(err);
-  }
 };
 
 exports.throwAsyncErrors = fn => {

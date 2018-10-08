@@ -7,7 +7,10 @@ const mongoose = require('mongoose');
 const db = require('./config/secrets').mongoURI;
 
 mongoose
-  .connect(db)
+  .connect(
+    db,
+    { useNewUrlParser: true }
+  )
   .then(() => console.log('connected to MongoDB successfully!'))
   .catch(err => console.log(err));
 

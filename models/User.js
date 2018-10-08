@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
-const catchErrors = require('../errorHandlers');
+const { catchErrors } = require('../errorHandlers');
 
 const UserSchema = new Schema({
   name: {
@@ -28,22 +28,17 @@ UserSchema.statics.generatePasswordHash = function generatePasswordHash(
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(newUser.password, salt, async (err, hash) => {
       newUser.password = hash;
-      const user = await newUser.save().catch(err => {
-        throw err;
-      });
-
+      const user = await catchErrors(newUser.save());
       return user;
     });
   });
 };
 
-UserSchema.statics.comparePasswords = async function comparePassword(
+UserSchema.statics.comparePasswords = async function comparePasswords(
   inputPassword,
   userPassword
 ) {
-  return await bcrypt
-    .compare(inputPassword, userPassword)
-    .catch(err => console.log(err));
+  return await bcrypt.compare(inputPassword, userPassword);
 };
 
 module.exports = User = mongoose.model('users', UserSchema);

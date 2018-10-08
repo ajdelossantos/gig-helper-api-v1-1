@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jsonwebtoken = require('jsonwebtoken');
 const keys = require('../../config/secrets');
+const { catchErrors } = require('../../errorHandlers');
 
 const User = require('../../models/User');
 
@@ -12,9 +13,7 @@ router.get('/test', (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-  const user = await User.findOne({
-    email: req.body.email
-  });
+  const user = await catchErrors(User.findOne({ email: req.body.email }));
 
   if (user) {
     return res
@@ -41,7 +40,7 @@ router.post('/login', async (req, res) => {
     return res.status(404).json({ email: 'This user does not exist' });
   }
 
-  const isMatch = User.comparePasswords(password, user.password);
+  const isMatch = await User.comparePasswords(password, user.password);
 
   if (isMatch) {
     const payload = { id: user.id, name: user.name };
