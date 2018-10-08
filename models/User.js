@@ -38,4 +38,15 @@ UserSchema.statics.generatePasswordHash = function generatePasswordHash(
   });
 };
 
+UserSchema.statics.comparePasswords = async function comparePassword(
+  inputPassword,
+  userPassword
+) {
+  try {
+    return await bcrypt.compare(inputPassword, userPassword);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = User = mongoose.model('users', UserSchema);

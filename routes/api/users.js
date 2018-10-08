@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const jsonwebtoken = require('jsonwebtoken');
+const keys = require('../../config/secrets');
 
 const User = require('../../models/User');
 
@@ -27,6 +29,34 @@ router.post('/register', async (req, res) => {
 
     User.generatePasswordHash(newUser);
     return res.json(newUser);
+  }
+});
+
+router.post('/login', async (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(404).json({ email: 'This user does not exist' });
+  }
+
+  const isMatch = User.comparePasswords(password, user.password);
+
+  if (isMatch) {
+    const payload = { id: user.id, name: user.name };
+
+    jsonwebtoken.sign(
+      payload,
+      keys.secretOrKey,
+      // key expires in one hour
+      { expiresIn: 3600 },
+      (err, token) => {
+        return res.json({ success: true, token: `Bearer ${token}` });
+      }
+    );
+  } else {
+    res.status(400).json({ password: 'Incorrect password' });
   }
 });
 
