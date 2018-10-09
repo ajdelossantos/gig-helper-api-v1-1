@@ -9,17 +9,21 @@ const db = require('./config/secrets').mongoURI;
 mongoose
   .connect(
     db,
-    { useNewUrlParser: true }
+    { useNewUrlParser: true } // Node console yells at you otherwise
   )
   .then(() => console.log('connected to MongoDB successfully!'))
   .catch(err => console.log(err));
 
-// Allows parsing of JSON sent to frontend
+// body-parser middlewares allows parsing of JSON sent to frontend
 const bodyParser = require('body-parser');
 
-// body-parser middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+// passport-jwt for Auth
+const passport = require('passport');
+app.use(passport.initialize());
+require('./config/passport')(passport);
 
 // Routes
 const users = require('./routes/api/users');
