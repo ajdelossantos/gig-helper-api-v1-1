@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
-const { catchErrors } = require('../errorHandlers');
 
 const UserSchema = new Schema({
   name: {
@@ -25,12 +24,14 @@ const UserSchema = new Schema({
 UserSchema.statics.generatePasswordHash = function generatePasswordHash(
   newUser
 ) {
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(newUser.password, salt, async (err, hash) => {
+  bcrypt.hash(newUser.password, 10, async (err, hash) => {
+    if (err) {
+      throw err;
+    } else {
       newUser.password = hash;
-      const user = await catchErrors(newUser.save());
+      const user = await newUser.save();
       return user;
-    });
+    }
   });
 };
 
