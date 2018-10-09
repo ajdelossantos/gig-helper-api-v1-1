@@ -11,8 +11,11 @@ exports.to = promise => {
 };
 
 exports.catchErrors = fn => {
-  return function(req, res, next) {
-    return fn(req, res, next).catch(next);
+  return function(...args) {
+    return fn(...args).catch(err => {
+      console.error('RIP you, have an error!!!');
+      console.error(err);
+    });
   };
 };
 

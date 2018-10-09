@@ -89,3 +89,10 @@ exports.loginUser = async (req, res) => {
     })
     .catch(err => console.log(err));
 };
+
+exports.returnCurrentUser = (req, res) =>
+  res.json({
+    id: req.user.id,
+    name: req.user.name,
+    email: req.user.email
+  });
