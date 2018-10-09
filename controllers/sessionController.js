@@ -1,15 +1,17 @@
 const jsonwebtoken = require('jsonwebtoken');
 const keys = require('../config/secrets');
 const bcrypt = require('bcryptjs');
+const validateRegisterInput = require('../validation/register');
+const validateLoginInput = require('../validation/login');
 
 const User = require('../models/User');
 
 exports.registerUser = async (req, res) => {
-  // const { errors, isValid } = validateRegisterInput(req.body);
+  const { errors, isValid } = validateRegisterInput(req.body);
 
-  // if (!isValid) {
-  //   return res.status(400).json(errors);
-  // }
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
 
   const user = await User.findOne({ email: req.body.email });
 
@@ -49,11 +51,11 @@ exports.registerUser = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
-  // const { errors, isValid } = validateLoginInput(req.body);
+  const { errors, isValid } = validateLoginInput(req.body);
 
-  // if (!isValid) {
-  //   return res.status(400).json(errors);
-  // }
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
 
   const email = req.body.email;
   const password = req.body.password;
