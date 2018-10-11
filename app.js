@@ -32,9 +32,10 @@ const events = require('./routes/api/events');
 app.use('/api/users', users);
 app.use('/api/events', events);
 
+const path = require('path');
 // Temporary index page
 app.get('/', (req, res) => {
-  res.send('<h2>Hello world!</h2>');
+  res.sendfile(path.join(__dirname + '/index.html'));
 });
 
 // Web Server
